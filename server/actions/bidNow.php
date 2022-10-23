@@ -1,37 +1,59 @@
 <?php
 
-    function getCurrentHighestBid($itemNo) {
-        $res = mysqli_query(
-            mysqli_connect("localhost", "sportybidwarz", "sportybidwarsPES1202203108$", "sportybidwarz"),
-            "SELECT * FROM Items WHERE ItemNo = ".$itemNo
-        );
+    $db_username = "sportybidwarz";
+    $db_password = "sportybidwarsPES1202203108$";
 
-        if(mysqli_num_rows($res) == 1)
-            return floatval(mysqli_fetch_assoc($res)['HighestBid']);
-        else
-            exit("Error: Item does not exist.");
+    function doesItemExist($itemNo) {
+        global $db_username, $db_password;
+        
+        $does = mysqli_num_rows(
+            mysqli_query(
+                mysqli_connect("localhost", $db_username, $db_password, $db_username),
+                "SELECT ItemNo FROM Items WHERE ItemNo = ".$itemNo
+            )
+        ) == 1;
+
+        echo $does;
+        return $does;
+    }
+
+    function getItemBaseBid($itemNo, $db) {
+        return floatval(mysqli_fetch_assoc(mysqli_query($db, "SELECT BaseBid FROM Items WHERE ItemNo = ".$itemNo))['BaseBid']);
+    }
+
+    function getCurrentHighestBid($itemNo, $db) {
+        return floatval(mysqli_fetch_assoc(mysqli_query($db, "SELECT HighestBid FROM Items WHERE ItemNo = ".$itemNo))['HighestBid']);
     }
 
     function setNewHighestBid($itemNo, $id, $amount) {
-        if(getCurrentHighestBid() < $amount) {
-            mysqli_query(
-                mysqli_connect("localhost", "sportybidwarz", "sportybidwarsPES1202203108$", "sportybidwarz"),
-                "UPDATE Items SET HighestBidderNo = ".$id.", HighestBid = ".$amount." WHERE ItemNo = ".$itemNo
-            );
-        }
-        else
-            exit("Error: New Bid is smaller than Existing Bid.");
-    }
+        global $db_username, $db_password;
 
-    if( !empty($_GET['item']) && !empty($_GET['id'] && !empty($_GET['amt']) ) ) {
-        setNewHighestBid(
-            (int)$_GET['item'],
-            (int)$_GET['id'],
-            floatval($_GET['amt'])
+        $db = mysqli_connect("localhost", $db_username, $db_password, $db_username);
+
+        $itemBaseBid = getItemBaseBid($itemNo, $db);
+        $itemCurrentHighestBid = getCurrentHighestBid($itemNo, $db);
+        
+        echo $itemBaseBid." ".$itemCurrentHighestBid;
+
+        if( $itemBaseBid >= $amount || $itemCurrentHighestBid >= $amount )
+            exit("Error: New Bid is smaller than Existing Bid or smaller than Base Price.");
+        
+        mysqli_query(
+            mysqli_connect("localhost", $db_username, $db_password, $db_username),
+            "UPDATE Items SET HighestBidderId = '".$id."', HighestBid = ".$amount." WHERE ItemNo = ".$itemNo
         );
     }
-    else {
+
+    if( empty($_GET['item']) || empty($_GET['id'] || empty($_GET['amt']) ) )
         exit("Error: Invalid Attributes.");
-    }
+    
+    if( !doesItemExist((int)$_GET['item']) )
+        exit("Error: Item does not exist.");
+    
+    setNewHighestBid(
+        (int)$_GET['item'],
+        $_GET['id'],
+        floatval($_GET['amt'])
+    );
 
 ?>
