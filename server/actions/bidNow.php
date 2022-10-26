@@ -25,7 +25,7 @@
         mysqli_query($db, "UPDATE Items SET HighestBidderId = '".$id."', HighestBid = ".$amount." WHERE ItemNo = ".$itemNo);
     }
 
-    if( empty($_GET['item']) || empty($_GET['id'] || empty($_GET['amt']) ) )
+    if( empty($_GET['item']) || empty($_GET['id']) || empty($_GET['amt']) )
         exit("Error: Invalid Attributes.");
     
     $db = mysqli_connect("localhost", $db_username, $db_password, $db_username);
