@@ -180,7 +180,7 @@ const basketball = [
         1024,
         "Wilt Chamberlain Jersey Lakers",
         2500.00,      
-        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.mitchellandness.com%2Fauthentic-jersey-philadelphia-76ers-1966-67-wilt-chamberlain-ajy4cp1&psig=AOvVaw3neaEiW8FzxG4wkftsAdwz&ust=1666768524384000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCLDY5-Dq-voCFQAAAAAdAAAAABAE",
+        "https://static.mitchellandness.com/media/catalog/product/cache/faecf306f19cfddfc0fac775879e801e/a/j/ajy4cp19159-p76roya66wcm_1.jpg",
         "Basketball",
     ],
     [
@@ -233,7 +233,7 @@ const tennis = [
         1031,
         "Rafael Nadal Signed Shirt",
         2300.00,       
-        "https://thumbs.worthpoint.com/zoom/images2/1/0816/04/rafael-nadal-game-used-signed-custom_1_29f5b0003fb256a2e9d59aa5698f50d8.jpg",
+        "https://elite-exclusives.co.uk/wp-content/uploads/2021/10/Nadal-blue-shirt-1_1.jpg",
         "Lawn Tennis",
     ],
     [
@@ -368,7 +368,7 @@ const loadSingleProduct = (productId, username, amount, time) => {
                                         </div>
                                         <div class="d-flex flex-column me-3">
                                             <label class="form-label" style="font-size: 14px;">Amount:</label>
-                                            <input id="amountInput" class="w-100 form-control" type="text">
+                                            <input id="amountInput" class="w-100 form-control" type="number">
                                         </div>
                                         <button id="bidNowButton" class="btn btn-danger text-uppercase mr-2 px-4">Bid Now</button>
                                     </div>
