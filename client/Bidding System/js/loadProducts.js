@@ -119,7 +119,7 @@ const football = [
         1016,
         "Belgium Jersey Signed by Eden Hazard",
         2200.00,       
-        "https://www.nicepng.com/png/detail/113-1130592_eden-hazard-signed-belgium-shirt-matt-hardy-photography.png",
+        "https://static1.cdn-subsidesports.com/2/media/catalog/product/cache/38d4094f49a5c2931b615f53f1250097/a/2/a2c9a8e33ec915a4eed815298e89eb533e5fdb017507613ae6f4327ee9765f0b.jpeg",
         "Football",
     ],
     [
@@ -247,7 +247,7 @@ const tennis = [
         1033,
         "Roger Federer Signed Racquet 2011 French Open",
         3000.00,       
-        "https://cdn.dmcl.biz/media/image/190013/o/Roger+Federer+racket+from+2011+French+Open+%282%29.jpg",
+        "https://m.media-amazon.com/images/I/710ejZpB2VL._SY450_.jpg",
         "Lawn Tennis",
     ],
     [
@@ -267,18 +267,59 @@ const tennis = [
 ]
 
 
-const loadProducts = productsArray => {
+/*const notify = message => {
+    const dialogBox = document.createElement('div')
+    dialogBox.className = "modal fade"
+    dialogBox.id = "exampleModal"
+    dialogBox.tabIndex = "-1"
+    dialogBox.setAttribute("role", "dialog")
+    dialogBox.setAttribute("aria-hidden", "true")
+    dialogBox.setAttribute("aria-labelledby", "exampleModalLabel")
+
+    dialogBox.innerHTML = `
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Alert</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ${message}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    `
+    document.body.insertBefore(dialogBox, null)
+
+    const dialogButton = document.createElement('button')
+    dialogButton.type = "button"
+    dialogButton.className = "btn btn-primary"
+    dialogButton.setAttribute("data-toggle", "modal")
+    dialogButton.setAttribute("data-target", "#exampleModal")
+    
+
+    document.body.insertBefore(dialogButton, null)
+    dialogButton.click()
+}*/
+
+
+const loadProducts = (productsArray, size = "col-xl-4 col-lg-6") => {
     let domString = ""
     for(let product of productsArray) {
         domString += `
-            <div class="col-xl-4 col-lg-6">
+            <div class="${size}">
                 <div class="blog-item bg-primary">
-                    <img style="object-fit: cover;" class="img-fluid w-100 h-auto" src="${product[3]}" alt="${product[1]}">
+                    <img style="object-fit: cover; height: 350px;" class="img-fluid w-100" src="${product[3]}" alt="${product[1]}">
                     <div class="d-flex align-items-center">
                         <div class="bg-secondary mt-n4 d-flex flex-column flex-shrink-0 justify-content-center text-center me-4" style="width: 60px; height: 100px;">
                             <i class="fa fa-calendar-alt text-primary mb-2"></i>
                             <p class="m-0 text-white">${
-                                "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(" ")[(Math.round(Math.random()*12) - 1)]
+                                "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(" ")[(Math.round(Math.random()*11))]
                             } ${Math.round(Math.random()*27) + 1}</p>
                             <small class="text-white">2023</small>
                         </div>
@@ -333,12 +374,12 @@ const loadSingleProduct = (productId, username, amount, time) => {
             <div class="col-md-10">
                 <div class="card">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class="images p-3">
-                                <div class="text-center p-4"> <img id="main-image" src="${product[3]}" width="250" /> </div>
+                                <div class="text-center p-4"> <img id="main-image" src="${product[3]}" width="350" /> </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-lg-6">
                             <div class="product p-4">
                                 <div class="mt-4 mb-3">
                                     <h3 class="text-uppercase">${product[1]}</h3>
@@ -363,12 +404,12 @@ const loadSingleProduct = (productId, username, amount, time) => {
                                     <h5 class="text-uppercase">Your Bid</h5>
                                     <div class="d-flex align-items-end">
                                         <div class="d-flex flex-column me-2">
-                                            <label class="form-label" style="font-size: 14px;">Username:</label>
-                                            <input id="usernameInput" class="w-100 form-control" type="text">
+                                            <label class="form-label mb-1" style="font-size: 14px;">Username:</label>
+                                            <input id="usernameInput" class="w-100 form-control border border-2" type="text">
                                         </div>
                                         <div class="d-flex flex-column me-3">
-                                            <label class="form-label" style="font-size: 14px;">Amount:</label>
-                                            <input id="amountInput" class="w-100 form-control" type="number">
+                                            <label class="form-label mb-1" style="font-size: 14px;">Amount:</label>
+                                            <input id="amountInput" class="w-100 form-control border border-2" type="number">
                                         </div>
                                         <button id="bidNowButton" class="btn btn-danger text-uppercase mr-2 px-4">Bid Now</button>
                                     </div>
@@ -380,6 +421,23 @@ const loadSingleProduct = (productId, username, amount, time) => {
             </div>
         </div>
     `
+
+    document.querySelector("#usernameInput").addEventListener('change', e => {
+        e.target.value !== "" ?
+            e.target.className = "w-100 form-control border border-2 border-success" :
+            e.target.className = "w-100 form-control border border-2"
+    })
+
+    document.querySelector("#amountInput").addEventListener('change', e => {
+        if( (username !== "" && parseInt(e.target.value) > amount) || (username === "" && parseInt(e.target.value) > product[2]) ) {
+            e.target.className = "w-100 form-control border border-2 border-success"
+            document.querySelector("#bidNowButton").className = "btn btn-danger text-uppercase mr-2 px-4"
+        }
+        else {
+            e.target.className = "w-100 form-control border border-2 border-danger"
+            document.querySelector("#bidNowButton").className = "btn btn-danger text-uppercase mr-2 px-4 disabled"
+        }
+    })
 
     document.querySelector("#bidNowButton").addEventListener('click', () => {
         setNewBid(
@@ -405,6 +463,10 @@ switch(document.querySelector("#heading").innerText.split(" ")[0]) {
 
     case "Tennis":
         loadProducts(tennis)
+        break
+    
+    case "Online":
+        loadProducts([cricket[0], football[3], basketball[5], tennis[8]], "col-12 col-lg-3")
         break
     
     default:
